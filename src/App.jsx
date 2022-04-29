@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from './auth';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import { getUser } from './redux/slice';
+import {
+  getUser, 
+  // getGitUser
+} from './redux/slice';
 
 
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.profile);
-  console.log(user);
   
   const checkUser = async () => {
     const user = supabase.auth.user();
@@ -28,11 +30,17 @@ function App() {
   const logout = async () => {
     await supabase.auth.signOut();
   }
-  // logout();
+  
   useEffect(() => {
     checkUser();
     window.addEventListener('hashchange', () => checkUser());
   });
+
+  // useEffect(() => {
+  //   user && dispatch(getGitUser(user.user_metadata.user_name));
+  // }, [user]);
+
+  // logout();
 
   if (user) {
     return (
