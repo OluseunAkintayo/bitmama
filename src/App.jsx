@@ -16,7 +16,7 @@ function App() {
   const checkUser = async () => {
     const user = supabase.auth.user();
     if (user) {
-      dispatch(getUser(user));
+      dispatch(getUser(user.user_metadata));
     }
   }
   

@@ -4,9 +4,9 @@ const TopNav = () => {
 
 	const styles = {
 		nav: 'bg-gray-50 h-24 border-b border-gray-300 w-full flex items-end justify-center',
-		container: 'flex bg-red-100',
+		container: 'flex py-2',
 		link: 'flex px-4',
-		navImage: 'w-4'
+		navImage: 'w-4 mr-1'
 	}
 
 	return (
@@ -18,11 +18,11 @@ const TopNav = () => {
 				</a>
 				<a href="#" className={styles.link}>
 					<img className={styles.navImage} src="/assets/book.svg" alt="Book" />
-					<span>Overview</span>
+					<span>Repositories</span>
 				</a>
 				<a href="#" className={styles.link}>
-					<img className={styles.navImage} src="/assets/book.svg" alt="Book" />
-					<span>Overview</span>
+					<img className={styles.navImage} src="/assets/projects.svg" alt="Book" />
+					<span>Projects</span>
 				</a>
 				<a href="#" className={styles.link}>
 					<img className={styles.navImage} src="/assets/package.svg" alt="Book" />
