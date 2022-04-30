@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { supabase } from '../auth';
 
 const Container = styled.div`
 	width: 25%;
+	min-width: 22.5rem;
 	padding: 0 2rem;
 	* {
 		color: rgba(0, 0, 0, 0.8);
+	}
+	.logout {
+		margin-top: 2rem;
 	}
 `;
 const Avatar = styled.div`
@@ -35,10 +40,11 @@ const Action = styled.img`
 const Name = styled.h2`
 	font-size: 1.5rem;
 	font-weight: 700;
+	line-height: 1.25rem;
+	margin-top: 1rem;
 `;
 const UsrName = styled.p`
 	font-size: 1.25rem;
-	margin-top: -7px;
 `;
 const Button = styled.button`
 	background: #f5f5f5;
@@ -98,48 +104,62 @@ const Line = styled.div`
 `;
 
 const SideNav = () => {
-	const user = useSelector(state => state.profile.user);
-	const { } = user;
-	console.log(user);
-	return (
-		<Container>
-			<Avatar>
-				<Img src="" alt="smile"/>
-				<Action src="/assets/smile.svg" alt="" />
-					{/* <Icon src="/assets/smile.svg" alt="" /> */}
-			</Avatar>
-			<Name>My name</Name>
-			<UsrName>GitUsername</UsrName>
-			<Button>Follow</Button>
-			<Status>This is the status</Status>
-			<Follow>
-				<Followers>
-					<Icon src="/assets/users.svg" alt=""/>
-					<span className="num">105</span>
-					<span>followers</span>
-				</Followers>
-				<Circle />
-				<Followers>
-					<span className="num">254</span>
-					<span>following</span>
-				</Followers>
-			</Follow>
-			<Params>
-				<Icon src="/assets/map.svg" alt=""/>
-				<span>Lagos</span>
-			</Params>
-			<Params>
-				<Icon src="/assets/mail.svg" alt=""/>
-				<span>mail@domain.com</span>
-			</Params>
-			<Params>
-				<Icon src="/assets/twitter.svg" alt=""/>
-				<span>@twitter</span>
-			</Params>
-			<Line />
-			<Text>Achivements</Text>
-		</Container>
-	)
+	const { gitUser } = useSelector(state => state.profile);
+	const { user_metadata } = useSelector(state => state.profile.authUser);
+	const { email } = user_metadata;
+
+	const logout = async () => {
+    await supabase.auth.signOut();
+		window.location.reload();
+  }
+
+	if(gitUser !== null) {
+		return (
+			<Container>
+				<Avatar>
+					<Img src={gitUser.avatar_url} alt="smile"/>
+					<Action src="/assets/smile.svg" alt="" />
+				</Avatar>
+				<Name>{gitUser.name}</Name>
+				<UsrName>{gitUser.login}</UsrName>
+				<Button>Follow</Button>
+				<Status>{gitUser.bio}</Status>
+				<Follow>
+					<Followers>
+						<Icon src="/assets/users.svg" alt=""/>
+						<span className="num">{gitUser.followers}</span>
+						<span>followers</span>
+					</Followers>
+					<Circle />
+					<Followers>
+						<span className="num">{gitUser.following}</span>
+						<span>following</span>
+					</Followers>
+				</Follow>
+				<Params>
+					<Icon src="/assets/map.svg" alt=""/>
+					<span>Lagos</span>
+				</Params>
+				<Params>
+					<Icon src="/assets/mail.svg" alt=""/>
+					<span>{!gitUser.email ? email : gitUser.email}</span>
+				</Params>
+				<Params>
+					<Icon src="/assets/twitter.svg" alt=""/>
+					<span>@{gitUser.twitter_username}</span>
+				</Params>
+				<Line />
+				<Text>Achivements</Text>
+				<Params className='logout' onClick={logout}>
+					<Text>Logout</Text>
+				</Params>
+			</Container>
+		)
+	} else {
+		return (
+			<h2>Please wait...</h2>
+		)
+	}
 }
 
 export default SideNav;

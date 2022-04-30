@@ -1,39 +1,64 @@
 import React from 'react'
+import styled from 'styled-components';
+
+const Nav = styled.nav`
+	height: 2.5rem;
+	margin-top: -0.5rem;
+`;
+const Wrapper = styled.div`
+	display: flex;
+`;
+const Link = styled.a`
+	display: flex;
+	align-items: center;
+	padding: 0.4rem 0.75rem;
+	/* background: pink; */
+	width: auto;
+	span {
+		font-size: 1rem;
+	}
+	&:hover {
+		border-radius: 0.25rem;
+		/* border-bottom: 2px solid #FD8C73; */
+		/* span {
+			font-weight: 600;
+		} */
+		background: #E8E8E8;
+	}
+`;
+const Img = styled.img`
+	width: 1.125rem;
+	height: 1.125rem;
+	margin-right: 0.375rem;
+`;
+
 
 const TopNav = () => {
-
-	const styles = {
-		nav: 'bg-gray-50 h-24 border-b border-gray-300 w-full flex items-end justify-center',
-		container: 'flex py-2',
-		link: 'flex px-4',
-		navImage: 'w-4 mr-1'
-	}
-
 	return (
-		<nav className={styles.nav}>
-			<div className={styles.container}>
-				<a href="#" className={styles.link}>
-					<img className={styles.navImage} src="/assets/book.svg" alt="Book" />
+		<Nav>
+			<Wrapper>
+				<Link href="#">
+					<Img src="/assets/book.svg" alt="Book" />
 					<span>Overview</span>
-				</a>
-				<a href="#" className={styles.link}>
-					<img className={styles.navImage} src="/assets/book.svg" alt="Book" />
+				</Link>
+				<Link href="#">
+					<Img src="/assets/repo.svg" alt="" />
 					<span>Repositories</span>
-				</a>
-				<a href="#" className={styles.link}>
-					<img className={styles.navImage} src="/assets/projects.svg" alt="Book" />
+				</Link>
+				<Link href="#">
+					<Img src="/assets/projects.svg" alt="" />
 					<span>Projects</span>
-				</a>
-				<a href="#" className={styles.link}>
-					<img className={styles.navImage} src="/assets/package.svg" alt="Book" />
+				</Link>
+				<Link href="#">
+					<Img src="/assets/package.svg" alt="" />
 					<span>Packages</span>
-				</a>
-				<a href="#" className={styles.link}>
-					<img className={styles.navImage} src="/assets/star.svg" alt="Book" />
+				</Link>
+				<Link href="#">
+					<Img src="/assets/star.svg" alt="" />
 					<span>Stars</span>
-				</a>
-			</div>
-		</nav>
+				</Link>
+			</Wrapper>
+		</Nav>
 	)
 }
 

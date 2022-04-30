@@ -1,19 +1,38 @@
 import React from 'react';
+import styled from 'styled-components';
 import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav';
-import styled from 'styled-components';
+import Main from '../components/Main';
+
+const Wrapper = styled.section`
+	* {
+		color: #24292f;
+	}
+`;
+
+const Space = styled.div`
+	height: 4rem;
+	border-bottom: 1px solid #c2ccd6;
+`;
 
 const Container = styled.section`
+	width: 100%;
 	max-width: 1440px;
 	margin: 0 auto;
+	display: flex;
+	margin-top: -2rem;
+	background: transparent;
 `;
 
 const Home = () => {
 	return (
-		<Container>
-			<TopNav />
-			<SideNav />
-		</Container>
+		<Wrapper>
+			<Space />
+			<Container>
+				<SideNav />
+				<Main />
+			</Container>
+		</Wrapper>
 	)
 }
 

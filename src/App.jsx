@@ -4,43 +4,45 @@ import { supabase } from './auth';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import {
-  getUser, 
-  // getGitUser
+  getUser,
+  getGitUser,
+  getRepos,
 } from './redux/slice';
-
 
 function App() {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.profile);
+  const [user, setUser] = useState(null);
   
   const checkUser = async () => {
-    const user = supabase.auth.user();
-    if (user) {
-      dispatch(getUser(user.user_metadata));
+    const loggedInUser = supabase.auth.user();
+    if (loggedInUser) {
+      setUser(loggedInUser.user_metadata);
+      dispatch(getUser(loggedInUser));
     }
   }
   
-
-  const githubAuth = async () => {
+  const login = async () => {
     await supabase.auth.signIn({
       provider: 'github',
     });
-  }
-
-  const logout = async () => {
-    await supabase.auth.signOut();
   }
   
   useEffect(() => {
     checkUser();
     window.addEventListener('hashchange', () => checkUser());
+  }, [checkUser]);
+
+  useEffect(() => {
+    if (user !== null) {
+      dispatch(getGitUser(user.user_name));
+    }
   });
 
-  // useEffect(() => {
-  //   user && dispatch(getGitUser(user.user_metadata.user_name));
-  // }, [user]);
-
-  // logout();
+  useEffect(() => {
+    if (user !== null) {
+      dispatch(getRepos(user.user_name));
+    };
+  });
 
   if (user) {
     return (
@@ -49,7 +51,7 @@ function App() {
   }
 
   return (
-    <Login login={githubAuth} />
+    <Login login={login} />
   )
 }
 
