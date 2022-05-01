@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -24,10 +24,11 @@ const Select = styled.select`
 `;
 const Option = styled.option``;
 
-const FIlter = () => {
+const Filter = ({ search }) => {
+	
 	return (
 		<Container className="space-x-4">
-			<Input type="text" placeholder="Find a repository..." />
+			<Input type="text" placeholder="Find a repository..." onChange={e => search(e.target.value)} />
 			<Select>
 				<Option>Type</Option>
 				<Option>Private</Option>
@@ -49,4 +50,4 @@ const FIlter = () => {
 	)
 }
 
-export default FIlter
+export default Filter

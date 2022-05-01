@@ -2,7 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 const initialState = {
 	authUser: null,
-	gitUser: null,
+	gitUser: {
+		data: null,
+		isLoading: false,
+	},
 	repos: {
 		data: [],
 		loading: false,
@@ -26,24 +29,28 @@ export const mainSlice = createSlice({
 	reducers: {
 		getUser: (state, action)=> {
 			state.authUser = action.payload
+		},
+		updateRepos: (state, action)=> {
+			state.repos.data = action.payload
 		}
 	},
 	extraReducers: {
 		[getGitUser.pending]: state => {
-			state.loading = true
+			state.gitUser.loading = true
 		},
 		[getGitUser.fulfilled]: (state, action) => {
-			state.gitUser = action.payload
-			state.loading = false
+			state.gitUser.data = action.payload
+			state.gitUser.loading = false
 		},
 		[getGitUser.rejected]: state => {
-			state.loading = false
+			state.gitUser.loading = false
 		},
 		[getRepos.pending]: state => {
 			state.repos.loading = true
 		},
 		[getRepos.fulfilled]: (state, action) => {
-			state.repos.data = action.payload
+			state.repos.data = action.payload.slice(0, 20);
+			localStorage.setItem('repos', JSON.stringify(action.payload.slice(0, 20)));
 			state.repos.loading = false
 		},
 		[getRepos.rejected]: state => {
@@ -52,5 +59,5 @@ export const mainSlice = createSlice({
 	}
 });
 
-export const { getUser } = mainSlice.actions;
+export const { getUser, updateRepos } = mainSlice.actions;
 export default mainSlice.reducer;

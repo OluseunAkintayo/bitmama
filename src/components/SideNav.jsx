@@ -104,7 +104,7 @@ const Line = styled.div`
 `;
 
 const SideNav = () => {
-	const { gitUser } = useSelector(state => state.profile);
+	const gitUser  = useSelector(state => state.profile.gitUser.data);
 	const { user_metadata } = useSelector(state => state.profile.authUser);
 	const { email } = user_metadata;
 

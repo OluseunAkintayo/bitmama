@@ -8,6 +8,7 @@ import {
   getGitUser,
   getRepos,
 } from './redux/slice';
+import Loading from './components/Loading';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,17 +37,22 @@ function App() {
     if (user !== null) {
       dispatch(getGitUser(user.user_name));
     }
-  });
+  }, [user]);
 
   useEffect(() => {
     if (user !== null) {
       dispatch(getRepos(user.user_name));
     };
-  });
+  }, [user]);
+
+  const repoData = useSelector(state => state.profile.repos.data);
+  const userData = useSelector(state => state.profile.gitUser.data);
 
   if (user) {
     return (
-      <Home />
+      <>
+        { repoData !== [] && userData !== null ? <Home /> : <Loading /> }
+      </>
     )
   }
 
