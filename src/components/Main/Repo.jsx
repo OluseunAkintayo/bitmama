@@ -67,6 +67,15 @@ const Color = styled.div`
 	margin-right: 0.25rem;
 	background-color: ${props => props.bg};
 `;
+const Star = styled.div`
+	display: flex;
+	align-items: center;
+	margin-left: 0.5rem;
+	cursor: pointer;
+	&:hover {
+		color: #0969da;
+	}
+`;
 const ForkInfo = styled.div`
 	display: flex;
 	align-items: center;
@@ -120,26 +129,27 @@ const Line = styled.div`
 
 const Repo = ({ repo, colors }) => {
 	const [forkedRepo, setForkedRepo] = useState(null);
-	const [color, setColor] = useState('');
-	const getColor = () => {
-		if(colors) {
-			if(forkedRepo) {
-				let forkedLang = forkedRepo.parent.language;
-				let langColor = colors.find(repo => repo.name === forkedLang);
-				setColor(langColor.color);
-			} else {
-				let lang = repo.language;
-				let langColor = colors.find(repo => repo.name === lang);
-				/* color = langColor.color; */
+
+	const getForkedColor = () => {
+		if(colors && repo.fork === true && forkedRepo ) {
+			const color = colors.find(color => color.name === forkedRepo.parent.language);
+			if(color) {
+				return <Color bg={color.color} />;
 			}
 		}
 	}
-	
-	console.log(color);
-	
-	useEffect(() => {
-		getColor();
-	}, []);
+
+	// color.start
+	const getColor = () => {
+		if(colors) {
+			const color = colors.find(color => color.name === repo.language);
+			if(color) {
+				return <Color bg={color.color} />;
+			}
+		}
+	}
+	// color.end
+	// forked repo.start
 	const getForkedRepo = (url) => {
 		if(repo.fork === true) {
 			return fetch(url).then(res => res.json()).then(res => {
@@ -147,6 +157,7 @@ const Repo = ({ repo, colors }) => {
 			}).catch(err => console.error(err));
 		}
 	}
+	// forked repo.end
 	const updated = repo_date => {
 		const currentYear = new Date(new Date().getFullYear(), 0, 1, 1).toISOString();
 		let date = new Date(repo_date);
@@ -165,7 +176,11 @@ const Repo = ({ repo, colors }) => {
 				return `Updated ${hours} hours ago`;
 			}
 		} else if(hours >= 24 && days < 30) {
-			return `Updated ${days} days ago`;
+			if(days < 2) {
+				return `Updated ${days} day ago`;
+			} else {
+				return `Updated ${days} days ago`;
+			}
 		} else if (hours > 24 && days > 30) {
 			return `Updated on ${dateMonth}`;
 		}
@@ -175,14 +190,14 @@ const Repo = ({ repo, colors }) => {
 	const renderLicense = () => {
 		if(repo.forked === true) {
 			return <License>
-				<Icon src='/assets/law/svg' alt='' />
-				<span>{forkedRepo.license.name}</span>
-			</License>
+							<Icon src='/assets/law/svg' alt='' />
+							<span>{forkedRepo.license.name}</span>
+						</License>
 		} else if(repo.license) {
 			return <License>
-				<Icon src='/assets/law.svg' alt='' />
-				<span>{repo.license.name}</span>
-			</License>
+							<Icon src='/assets/law.svg' alt='' />
+							<span>{repo.license.name}</span>
+						</License>
 		} else {
 			return null;
 		}
@@ -209,9 +224,19 @@ const Repo = ({ repo, colors }) => {
 				<Info>{repo.description}</Info>
 				<Footer>
 					<Language>
-						
+						{ 
+							repo.fork === true && forkedRepo ? getForkedColor() :	getColor()
+						}
 						<span>{repo.fork === true ? (forkedRepo && forkedRepo.parent.language) : repo.language}</span>
 					</Language>
+					{
+						repo.stargazers_count > 0 && (
+							<Star>
+								<FooterIcon src="/assets/star.svg" alt=""/>
+								<span>{repo.stargazers_count}</span>
+							</Star>
+						)
+					}
 					<>
 						{
 							repo.fork === true && forkedRepo !== null && (
@@ -240,4 +265,4 @@ const Repo = ({ repo, colors }) => {
 	)
 }
 
-export default Repo
+export default Repo;

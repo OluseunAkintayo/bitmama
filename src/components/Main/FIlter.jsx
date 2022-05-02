@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateRepos } from '../../redux/slice';
+
 
 const Container = styled.div`
 	padding: 1.5rem 0;
@@ -24,30 +27,89 @@ const Select = styled.select`
 `;
 const Option = styled.option``;
 
-const Filter = ({ search }) => {
+const Filter = () => {
+	const dispatch = useDispatch();
+	const repos = useSelector(state => state.profile.repos.data);
 	
+	// search.start
+	let tempRepos = JSON.parse(localStorage.getItem('repos'));
+	const [searchTxt, setSearchTxt] = useState('');
+	const search = (val) => {
+		setSearchTxt(val);
+		if(val.trim() !== '') {
+			const result = tempRepos.filter((item) => {
+				return Object.values(item).join('').toLowerCase().includes(searchTxt.toLowerCase())
+			});
+			dispatch(updateRepos(result));
+		} else {
+			dispatch(updateRepos(tempRepos));
+		}
+	}
+	// search.end
+
+	// languages.start
+	const [lang, setLang] = useState([]);
+	let tempLang = [];
+	tempRepos.forEach(item => {
+		item.language && tempLang.push(item.language);
+	});
+	tempLang = [...new Set(tempLang)];
+	// languages.end
+
+	// filters || sort .start
+	const [filter, setFilter] = useState('');
+	const handleSort = e => {
+		let val = e.target.value.toLowerCase();
+		setFilter(val);
+		if(val === 'name') {
+			const res = tempRepos.sort((a, b) => a.name.localeCompare(b.name));
+			dispatch(updateRepos(res));
+		} else if(val === 'last updated') {
+			const res = tempRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+			dispatch(updateRepos(res));
+		} else if(val === 'stars') {
+			const res = tempRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+			dispatch(updateRepos(res));
+		}
+	}
+
+	const handleFilter = e => {
+		const val = e.target.value;
+		if(val !== "Language") {
+			const res = tempRepos.filter(item => item.language === val);
+			dispatch(updateRepos(res));
+		} else {
+			dispatch(updateRepos(tempRepos));
+		}
+	}
+	// filters || sort.end
+	
+	useEffect(() => {
+		setLang(tempLang)
+	}, []);
+
 	return (
-		<Container className="space-x-4">
-			<Input type="text" placeholder="Find a repository..." onChange={e => search(e.target.value)} />
-			<Select>
-				<Option>Type</Option>
-				<Option>Private</Option>
-				<Option>Public</Option>
-			</Select>
-			<Select>
-				<Option>Language</Option>
-				<Option>Dart</Option>
-				<Option>Python</Option>
-				<Option>JavaScript</Option>
-			</Select>
-			<Select>
-				<Option>Sort</Option>
-				<Option>Last updated</Option>
-				<Option>Name</Option>
-				<Option>Stars</Option>
-			</Select>
-		</Container>
+		<>
+			<Container className="space-x-4">
+				<Input type="text" placeholder="Find a repository..." onChange={e => search(e.target.value)} />
+				<Select>
+					<Option>Type</Option>
+					<Option>Private</Option>
+					<Option>Public</Option>
+				</Select>
+				<Select onChange={handleFilter}>
+					<Option>Language</Option>
+					{ lang && lang.sort((a, b) => a.localeCompare(b)).map(item => <Option key={item}>{item}</Option>) }
+				</Select>
+				<Select onChange={handleSort}>
+					<Option>Sort</Option>
+					<Option value="Last updated">Last updated</Option>
+					<Option value="Name">Name</Option>
+					<Option value="Stars">Stars</Option>
+				</Select>
+			</Container>
+		</>
 	)
 }
 
-export default Filter
+export default Filter;
