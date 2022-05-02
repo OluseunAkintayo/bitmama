@@ -6,10 +6,9 @@ const Container = styled.section`
 	height: 100vh;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: center;	;
 `;
 const LoginWrapper = styled.div`
-	aspect-ratio: 3/4;
 	h2 {
 		text-align: center;
 		font-size: 30px;

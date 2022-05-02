@@ -50,6 +50,7 @@ function App() {
   const userData = useSelector(state => state.profile.gitUser.data);
 
   if (user) {
+    window.location.hash = '#';
     return (
       <>
         { repoData !== [] && userData !== null ? <Home /> : <Loading /> }
