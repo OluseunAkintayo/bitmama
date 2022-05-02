@@ -69,7 +69,7 @@ const Filter = () => {
 	// languages.start
 	const [lang, setLang] = useState([]);
 	let tempLang = [];
-	tempRepos.forEach(item => {
+	[...repos].forEach(item => {
 		item.language && tempLang.push(item.language);
 	});
 	tempLang = [...new Set(tempLang)];
