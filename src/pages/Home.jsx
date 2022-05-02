@@ -12,6 +12,9 @@ const Wrapper = styled.section`
 const Space = styled.div`
 	height: 4rem;
 	border-bottom: 1px solid #c2ccd6;
+	@media(max-width: 968px) {
+		display: none;
+	}
 `;
 
 const Container = styled.section`
@@ -21,6 +24,10 @@ const Container = styled.section`
 	display: flex;
 	margin-top: -2rem;
 	background: transparent;
+	@media(max-width: 968px) {
+		flex-direction: column;
+		margin-top: 0;
+	}
 `;
 
 const Home = () => {

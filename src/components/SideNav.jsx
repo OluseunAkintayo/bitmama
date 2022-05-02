@@ -10,20 +10,40 @@ const Container = styled.div`
 	* {
 		color: rgba(0, 0, 0, 0.8);
 	}
-	.logout {
-		margin-top: 2rem;
+	#logout {
+		margin-top: 1rem;
+		color: red !important;
+		font-weight: 600;
+	}
+	@media(max-width: 968px) {
+		width: 100%;
+		padding: 2rem;
 	}
 `;
 const Avatar = styled.div`
 	position: relative;
 	width: 100%;
 	aspect-ratio: 1;
+	@media(max-width: 968px) {
+		aspect-ratio: unset;
+		width: auto;
+		margin-right: 1rem;
+	}
+`;
+const User = styled.div`
+	@media(max-width: 968px) {
+		display: flex;
+	}
 `;
 const Img = styled.img`
 	background: gray;
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
+	@media(max-width: 968px) {
+		width: 5rem;
+		height: 5rem;
+	}
 `;
 const Action = styled.img`
 	position: absolute;
@@ -36,6 +56,12 @@ const Action = styled.img`
 	border: 1px solid #57606a;
 	background: rgb(249 250 251);
 	cursor: pointer;
+	@media(max-width: 968px) {
+		display: none;
+	}
+`;
+const UserInfo = styled.div`
+
 `;
 const Name = styled.h2`
 	font-size: 1.5rem;
@@ -88,7 +114,7 @@ const Icon = styled.img`
 	margin-right: 0.5rem;
 `;
 const Text = styled.p``;
-const Params = styled.div`
+const Params = styled.a`
 	display: flex;
 	align-items: center;
 	margin: 0.25rem 0;
@@ -96,11 +122,20 @@ const Params = styled.div`
 	span {
 		font-weight: 500;
 	}
+	.logout {
+		color: red;
+	}
 `;
 const Line = styled.div`
 	height: 1px;
 	background: #57606a;
 	margin: 1rem 0;
+	@media(max-width: 968px) {
+		display: none;
+	}
+`;
+const Image = styled.img`
+	width: 5rem;
 `;
 
 const SideNav = () => {
@@ -116,12 +151,16 @@ const SideNav = () => {
 	if(gitUser !== null) {
 		return (
 			<Container>
-				<Avatar>
-					<Img src={gitUser.avatar_url} alt="smile"/>
-					<Action src="/assets/smile.svg" alt="" />
-				</Avatar>
-				<Name>{gitUser.name}</Name>
-				<UsrName>{gitUser.login}</UsrName>
+				<User>
+					<Avatar>
+						<Img src={gitUser.avatar_url} alt="smile"/>
+						<Action src="/assets/smile.svg" alt="" />
+					</Avatar>
+					<UserInfo>
+						<Name>{gitUser.name}</Name>
+						<UsrName>{gitUser.login}</UsrName>
+					</UserInfo>
+				</User>
 				<Button>Follow</Button>
 				<Status>{gitUser.bio}</Status>
 				<Follow>
@@ -144,14 +183,15 @@ const SideNav = () => {
 					<Icon src="/assets/mail.svg" alt=""/>
 					<span>{!gitUser.email ? email : gitUser.email}</span>
 				</Params>
-				<Params>
+				<Params href={'https://twitter.com/' + gitUser.twitter_username}>
 					<Icon src="/assets/twitter.svg" alt=""/>
 					<span>@{gitUser.twitter_username}</span>
 				</Params>
 				<Line />
 				<Text>Achivements</Text>
-				<Params className='logout' onClick={logout}>
-					<Text>Logout</Text>
+				<Image src="https://github.githubassets.com/images/modules/profile/badge--acv-64.png" alt=""/>
+				<Params id='logout' onClick={logout}>
+					<Text className='logout'>Logout</Text>
 				</Params>
 			</Container>
 		)

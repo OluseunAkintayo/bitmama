@@ -3,16 +3,23 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
 	padding: 1rem 0;
+	margin: 0 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	border-bottom: 1px solid #d0d7de;
+	&:nth-child(1) {
+		background: pink;
+	}
 `;
 const Desc = styled.div``;
 const Review = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
+	@media(max-width: 575px) {
+		display: none;
+	}
 `;
 const NameField = styled.div``;
 const Name = styled.a`
@@ -42,6 +49,9 @@ const Info = styled.p`
 	margin: 0.5rem 0;
 	color: #57606a;
 	max-width: 20rem;
+	@media(max-width: 575px) {
+		max-width: unset;
+	}
 `;
 const Icon = styled.img`
 	width: 1.5rem;

@@ -7,7 +7,10 @@ import Repo from './Main/Repo';
 
 const Container = styled.div`
 	width: 100%;
-	padding: 0 2rem;
+	/* padding: 0 2rem; */
+	@media(max-width: 968px) {
+		padding: 0;
+	}
 `;
 
 const Main = () => {

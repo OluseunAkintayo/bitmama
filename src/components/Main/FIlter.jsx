@@ -5,10 +5,15 @@ import { updateRepos } from '../../redux/slice';
 
 
 const Container = styled.div`
-	padding: 1.5rem 0;
+	padding: 1.5rem 2rem;
 	display: flex;
-	min-height: 2.5rem;
-	border-bottom: 1px solid #d0d7de;
+	align-items: center;
+	@media(max-width: 968px) {
+		padding: 1.5rem 2rem;
+		flex-direction: column;
+		height: auto;
+		align-items: flex-start;
+	}
 `;
 const Input = styled.input`
 	border: 1px solid #d0d7de;
@@ -17,6 +22,13 @@ const Input = styled.input`
 	outline: none;
 	border-radius: 0.25rem;
 	font-size: 0.875rem;
+	@media(max-width: 968px) {
+		margin-bottom: 0.75rem;
+		width: 100%;
+	}
+`;
+const FilterArray = styled.div`
+	height: 2.5rem;
 `;
 const Select = styled.select`
 	padding: 0 0.5rem;
@@ -24,6 +36,13 @@ const Select = styled.select`
 	border-radius: 0.25rem;
 	cursor: pointer;
 	outline: none;
+	height: 100%;
+	margin-left: 0.5rem;
+	@media(max-width: 968px) {
+		&:nth-child(1) {
+			margin-left: 0;
+		}
+	}
 `;
 const Option = styled.option``;
 
@@ -90,23 +109,25 @@ const Filter = () => {
 
 	return (
 		<>
-			<Container className="space-x-4">
+			<Container className="">
 				<Input type="text" placeholder="Find a repository..." onChange={e => search(e.target.value)} />
-				<Select>
-					<Option>Type</Option>
-					<Option>Private</Option>
-					<Option>Public</Option>
-				</Select>
-				<Select onChange={handleFilter}>
-					<Option>Language</Option>
-					{ lang && lang.sort((a, b) => a.localeCompare(b)).map(item => <Option key={item}>{item}</Option>) }
-				</Select>
-				<Select onChange={handleSort}>
-					<Option>Sort</Option>
-					<Option value="Last updated">Last updated</Option>
-					<Option value="Name">Name</Option>
-					<Option value="Stars">Stars</Option>
-				</Select>
+				<FilterArray>
+					<Select>
+						<Option>Type</Option>
+						<Option>Private</Option>
+						<Option>Public</Option>
+					</Select>
+					<Select onChange={handleFilter}>
+						<Option>Language</Option>
+						{ lang && lang.sort((a, b) => a.localeCompare(b)).map(item => <Option key={item}>{item}</Option>) }
+					</Select>
+					<Select onChange={handleSort}>
+						<Option>Sort</Option>
+						<Option value="Last updated">Last updated</Option>
+						<Option value="Name">Name</Option>
+						<Option value="Stars">Stars</Option>
+					</Select>
+				</FilterArray>
 			</Container>
 		</>
 	)
