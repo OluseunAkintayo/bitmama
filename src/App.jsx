@@ -41,8 +41,8 @@ function App() {
 
   useEffect(() => {
     if (user !== null) {
-      dispatch(getRepos("dreywandowski"));
-      // dispatch(getRepos(user.user_name));
+      // dispatch(getRepos("dreywandowski"));
+      dispatch(getRepos(user.user_name));
     };
   }, [user]);
 

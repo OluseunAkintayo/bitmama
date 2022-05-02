@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav';
 import Main from '../components/Main';
 

@@ -56,7 +56,7 @@ const Filter = () => {
 	tempLang = [...new Set(tempLang)];
 	// languages.end
 
-	// filters || sort .start
+	// filters || sort.start
 	const [filter, setFilter] = useState('');
 	const handleSort = e => {
 		let val = e.target.value.toLowerCase();
@@ -65,7 +65,7 @@ const Filter = () => {
 			const res = tempRepos.sort((a, b) => a.name.localeCompare(b.name));
 			dispatch(updateRepos(res));
 		} else if(val === 'last updated') {
-			const res = tempRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+			const res = tempRepos.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
 			dispatch(updateRepos(res));
 		} else if(val === 'stars') {
 			const res = tempRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
